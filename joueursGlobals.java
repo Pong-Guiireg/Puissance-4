@@ -5,8 +5,8 @@ public class joueursGlobals {
     public int nbrDeJoueurs = 1;
     public List<joueurs> allJoueurs = new ArrayList<>();
 
-    public List<joueurs> getAllJoueurs() {
-        return allJoueurs;
+    public joueurs getJoueursByIndex(int index) {
+        return allJoueurs.get(index);
     }
     public void addJoueursInAllJoueurs(joueurs Joueurs) {
         this.allJoueurs.add(Joueurs);

@@ -11,7 +11,7 @@ public class Grille {
         System.out.flush();
     }
 
-    public Grille() {
+    public Grille(joueurs currentPlayers) {
         plateau = new String[LIGNES][COLONNES];
         for (int i = 0; i < LIGNES; i++) {
             for (int j = 0; j < COLONNES; j++) {
@@ -32,14 +32,14 @@ public class Grille {
         }
         return false;
     }
-
-    public String toString() {
+    
+    boolean gameStarted = false;
+    public String toString(joueurs currentPlayers) {
         StringBuilder sb = new StringBuilder();
-        boolean gameStarted = false;
-        boolean choice = false;
+        boolean choice = true;
 
         if (!gameStarted) {
-            System.out.print("Début de la partie");
+            System.out.print("Début de la partie :");
             String input = scanner.nextLine().toLowerCase();
             gameStarted = true;
             ClearTerminal();
@@ -47,8 +47,8 @@ public class Grille {
         if (gameStarted) {
             if (!choice) {
                 System.out.print("> ");
-                String input = scanner.nextLine().toLowerCase();
-                choice = true;
+                String input = scanner.next().toLowerCase();
+                choice = false;
             }
             for (int i = 0; i < LIGNES; i++) {
                 sb.append("#");
@@ -58,7 +58,8 @@ public class Grille {
                 sb.append("#\n");
             }
             sb.append("##########\n");
-            sb.append(" abcdefgh");
+            sb.append(" abcdefgh\n");
+            sb.append("C'est à " + currentPlayers.getName() + " de jouer !\n >");
         }
         return sb.toString();
     }

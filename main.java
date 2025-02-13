@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class main {
     
     public static void main(String[] args) {
-        String[][] tableau;
         joueurs joueur1 = new joueurs();
         joueurs joueur2 = new joueurs();
         //Scanner scanner = new Scanner(System.in);
@@ -28,13 +27,17 @@ public class main {
             }
         } while (joueur2.getSymbole().equals(joueur1.getSymbole()));
 
+        joueursGlobals allJoueurs = new joueursGlobals();
+        allJoueurs.addJoueursInAllJoueurs(joueur1);
+        allJoueurs.addJoueursInAllJoueurs(joueur2);
         //--------------------------------------------------------------------------
-        Grille grille = new Grille();
+        joueurs currentPlayers = joueur1;
+        Grille grille = new Grille(currentPlayers);
         Scanner scanner = new Scanner(System.in);
-        String currentPlayer = joueur1.symboleDeJeu;
+        
 
         while (true) {
-            System.out.println(grille);
+            System.out.println(grille.toString(joueur1));
             System.out.print(" ");
             String input = scanner.nextLine().toLowerCase();
             if (input.equals("q")) {
@@ -42,8 +45,8 @@ public class main {
             }
             if (input.length() == 1 && input.charAt(0) >= 'a' && input.charAt(0) <= 'h') {
                 int colonne = input.charAt(0) - 'a';
-                if (grille.placerPion(colonne, currentPlayer)) {
-                    currentPlayer = currentPlayer.equals(joueur1.symboleDeJeu) ? joueur2.symboleDeJeu : joueur1.symboleDeJeu;
+                if (grille.placerPion(colonne, currentPlayers.getSymbole())) {
+                    currentPlayers = currentPlayers.equals(joueur1) ? joueur2 : joueur1;
                 } else {
                     System.out.println("\u001B[36mColonne pleine ou invalide, veuillez réessayer.\u001B[0m");
                 }
