@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class joueurs extends joueursGlobals{
     public int nombreDeVictoire;
     public String symboleDeJeu;
+
     public String name;
 
     public joueurs(){}
@@ -16,7 +17,7 @@ public class joueurs extends joueursGlobals{
         String name = scanner.nextLine();
         this.name = name;
         System.out.println("Joueur "+nbrDeJoueurs+", votre nom est : " + this.name);
-        nbrDeJoueurs++;
+        addJoueursInAllJoueurs(this);;
         return name;
     }
     public String setSymbole(){
@@ -38,7 +39,7 @@ public class joueurs extends joueursGlobals{
     public String getName() {
         return name;
     }
-    public String getSymboleDeJeu() {
+    public String getSymbole() {
         return symboleDeJeu;
     }
     public int getNombreDeVictoire() {
