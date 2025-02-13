@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class TestGrille {
-    public static void main(String[] args) {
+    TestGrille() {
         Grille grille = new Grille();
         Scanner scanner = new Scanner(System.in);
         String currentPlayer = "X";
