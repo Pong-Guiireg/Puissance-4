@@ -12,9 +12,9 @@ public class main {
         //for (int i = 0; i < nbrDeJoueurs; i++) {
         //    
         //}
-        joueur1.setName();
+        joueur1.setName(1);
         do {
-            joueur2.setName();
+            joueur2.setName(2);
             if (joueur1.getName().equals(joueur2.getName())) {
                 System.out.println("\u001B[36mVous ne pouvez pas choisir le meme Nom que vos adversaire !\u001B[0m");
             }
@@ -23,9 +23,9 @@ public class main {
         joueur1.setSymbole();
         do {
             joueur2.setSymbole();
-            if (joueur2.getSymbole() == joueur1.getSymbole()) {
+            if (joueur2.getSymbole().equals(joueur1.getSymbole())) {
                 System.out.println("\u001B[36mVous ne pouvez pas choisir le meme Symbole que vos adversaire !\u001B[0m");
             }
-        } while (joueur2.getSymbole() == joueur1.getSymbole());
+        } while (joueur2.getSymbole().equals(joueur1.getSymbole()));
     }
 }

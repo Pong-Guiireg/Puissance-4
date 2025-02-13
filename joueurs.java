@@ -11,12 +11,11 @@ public class joueurs extends joueursGlobals{
         this.name = name;
         this.symboleDeJeu = symbole;
     }
-    public String setName(){
-        System.out.println("Joueur "+nbrDeJoueurs+", quel est votre nom ?");
+    public String setName(int nbr){
+        System.out.println("Joueur "+nbr+", quel est votre nom ?");
         String name = scanner.nextLine();
         this.name = name;
         System.out.println("Joueur "+nbrDeJoueurs+", votre nom est : " + this.name);
-        addJoueursInAllJoueurs(this);;
         return name;
     }
     public String setSymbole(){
