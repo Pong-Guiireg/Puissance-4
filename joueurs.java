@@ -3,8 +3,8 @@ import java.util.Scanner;
 public class joueurs extends joueursGlobals{
     public int nombreDeVictoire;
     public String symboleDeJeu;
-
     public String name;
+    Scanner scanner = new Scanner(System.in);
 
     public joueurs(){}
     public joueurs(String name, String symbole){
@@ -12,7 +12,6 @@ public class joueurs extends joueursGlobals{
         this.symboleDeJeu = symbole;
     }
     public String setName(){
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Joueur "+nbrDeJoueurs+", quel est votre nom ?");
         String name = scanner.nextLine();
         this.name = name;
@@ -21,7 +20,6 @@ public class joueurs extends joueursGlobals{
         return name;
     }
     public String setSymbole(){
-        Scanner scanner = new Scanner(System.in);
         System.out.println(this.name+", quel symbole voulez vous utiliser ?");
         String symbole = scanner.nextLine();
         this.symboleDeJeu = symbole;

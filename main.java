@@ -1,4 +1,4 @@
-
+import java.util.Scanner;
 
 public class main {
     
@@ -6,13 +6,9 @@ public class main {
         String[][] tableau;
         joueurs joueur1 = new joueurs();
         joueurs joueur2 = new joueurs();
-
-        //do{joueur1.setName();}while(joueur1.name == joueur2.name);
-        //do{joueur1.setSymbole();}while(joueur1.symboleDeJeu == joueur2.symboleDeJeu);
-        //do{joueur2.setName();}while(joueur2.name == joueur1.name);
-        //do{joueur2.setSymbole();}while (joueur2.symboleDeJeu == joueur1.symboleDeJeu);
-        //System.out.println("\u001B[36mVous ne pouvez pas rentrez la meme valeur que vos adversaires !\u001B[0m");
-
+        //Scanner scanner = new Scanner(System.in);
+        //System.out.println("A combien de joueurs voulez vous jouez ?");
+        //int nbrDeJoueurs = Integer.parseInt(scanner.nextLine());
         //for (int i = 0; i < nbrDeJoueurs; i++) {
         //    
         //}
