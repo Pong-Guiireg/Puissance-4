@@ -1,2 +1,4 @@
 # Ignorer les fichiers volumineux gérés par Git LFS
 lib/libjfxwebkit.so
+
+*.class
