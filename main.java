@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class main {
-    
+
     public static void main(String[] args) {
         joueurs joueur1 = new joueurs();
         joueurs joueur2 = new joueurs();
@@ -9,7 +9,7 @@ public class main {
         //System.out.println("A combien de joueurs voulez vous jouez ?");
         //int nbrDeJoueurs = Integer.parseInt(scanner.nextLine());
         //for (int i = 0; i < nbrDeJoueurs; i++) {
-        //    
+        //
         //}
         joueur1.setName(1);
         do {
@@ -34,11 +34,10 @@ public class main {
         joueurs currentPlayers = joueur1;
         Grille grille = new Grille(currentPlayers);
         Scanner scanner = new Scanner(System.in);
-        
+
 
         while (true) {
-            System.out.println(grille.toString(currentPlayers));
-            System.out.print(" ");
+            grille.afficherGrille(currentPlayers);
             String input = scanner.nextLine().toLowerCase();
             if (input.equals("q")) {
                 break;
@@ -46,7 +45,7 @@ public class main {
             if (input.length() == 1 && input.charAt(0) >= 'a' && input.charAt(0) <= 'h') {
                 int colonne = input.charAt(0) - 'a';
                 if (grille.placerPion(colonne, currentPlayers.getSymbole())) {
-                    if(!grille.gameWin()){
+                    if (!grille.gameWin()) {
                         currentPlayers = currentPlayers.equals(joueur1) ? joueur2 : joueur1;
                     }
                 } else {
