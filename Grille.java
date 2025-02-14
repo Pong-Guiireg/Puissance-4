@@ -93,6 +93,7 @@ public class Grille {
                     ClearTerminal();
                     temp = true;
                     gameStarted = false;
+                    currentPlayers.nombreDeVictoire++;
                 }else {
                     System.exit(0);
                 }
