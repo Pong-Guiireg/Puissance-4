@@ -37,7 +37,7 @@ public class main {
         
 
         while (true) {
-            System.out.println(grille.toString(joueur1));
+            System.out.println(grille.toString(currentPlayers));
             System.out.print(" ");
             String input = scanner.nextLine().toLowerCase();
             if (input.equals("q")) {
@@ -46,7 +46,9 @@ public class main {
             if (input.length() == 1 && input.charAt(0) >= 'a' && input.charAt(0) <= 'h') {
                 int colonne = input.charAt(0) - 'a';
                 if (grille.placerPion(colonne, currentPlayers.getSymbole())) {
-                    currentPlayers = currentPlayers.equals(joueur1) ? joueur2 : joueur1;
+                    if(!grille.gameWin()){
+                        currentPlayers = currentPlayers.equals(joueur1) ? joueur2 : joueur1;
+                    }
                 } else {
                     System.out.println("\u001B[36mColonne pleine ou invalide, veuillez réessayer.\u001B[0m");
                 }

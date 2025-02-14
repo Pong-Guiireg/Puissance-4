@@ -32,8 +32,33 @@ public class Grille {
         }
         return false;
     }
+
+    public boolean gameWin() {
+        for (int i = 0; i < LIGNES; i++) {
+            for (int j = 0; j < COLONNES; j++) {
+                if (!plateau[i][j].equals(" ")) {
+                    if (j + 3 < COLONNES && plateau[i][j].equals(plateau[i][j + 1]) && plateau[i][j].equals(plateau[i][j + 2]) && plateau[i][j].equals(plateau[i][j + 3])) {
+                        return true;
+                    }
+                    if (i + 3 < LIGNES) {
+                        if (plateau[i][j].equals(plateau[i + 1][j]) && plateau[i][j].equals(plateau[i + 2][j]) && plateau[i][j].equals(plateau[i + 3][j])) {
+                            return true;
+                        }
+                        if (j + 3 < COLONNES && plateau[i][j].equals(plateau[i + 1][j + 1]) && plateau[i][j].equals(plateau[i + 2][j + 2]) && plateau[i][j].equals(plateau[i + 3][j + 3])) {
+                            return true;
+                        }
+                        if (j - 3 >= 0 && plateau[i][j].equals(plateau[i + 1][j - 1]) && plateau[i][j].equals(plateau[i + 2][j - 2]) && plateau[i][j].equals(plateau[i + 3][j - 3])) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
     
     boolean gameStarted = false;
+    boolean temp = true;
     public String toString(joueurs currentPlayers) {
         StringBuilder sb = new StringBuilder();
         boolean choice = true;
@@ -45,11 +70,6 @@ public class Grille {
             ClearTerminal();
         }
         if (gameStarted) {
-            if (!choice) {
-                System.out.print("> ");
-                String input = scanner.next().toLowerCase();
-                choice = false;
-            }
             for (int i = 0; i < LIGNES; i++) {
                 sb.append("#");
                 for (int j = 0; j < COLONNES; j++) {
@@ -59,7 +79,26 @@ public class Grille {
             }
             sb.append("##########\n");
             sb.append(" abcdefgh\n");
-            sb.append("C'est à " + currentPlayers.getName() + " de jouer !\n >");
+            if (gameWin() && temp == true) {
+                sb.append("Le joueur " + currentPlayers.getName() + " a gagné !\n");
+                sb.append("Fin de la partie !");
+                temp = false;
+            }else {
+                sb.append("C'est à " + currentPlayers.getName() + " de jouer !\n >");
+            }
+            if (temp == false) {
+                sb.append("Voulez-vous rejouer ? (O/N)");
+                String input = scanner.nextLine().toLowerCase();
+                if (input.equals("o")) {
+                    ClearTerminal();
+                    temp = true;
+                    gameStarted = false;
+                }else {
+                    System.exit(0);
+                }
+                
+            }
+            
         }
         return sb.toString();
     }
