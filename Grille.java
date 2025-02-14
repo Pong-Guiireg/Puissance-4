@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Grille {
     private static final int LIGNES = 6;
-    private static final int COLONNES = 8*2;
+    private static final int COLONNES = (8*2) - 1 ;
     private String[][] plateau;
     private Scanner scanner = new Scanner(System.in);
 
@@ -105,7 +105,7 @@ public class Grille {
                 }
                 System.out.println("# ");
             }
-            System.out.println("# # # # # # # # ##");
+            System.out.println("# # # # # # # # #");
             System.out.println(" a b c d e f g h");
 
             if (gameWin()) {

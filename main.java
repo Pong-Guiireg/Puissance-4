@@ -54,6 +54,9 @@ public class main {
             }
             if (input.length() == 1 && input.charAt(0) >= 'a' && input.charAt(0) <= 'h') {
                 int colonne = input.charAt(0) - 'a';
+                if (colonne > 0) {
+                    colonne = colonne * 2;
+                }
                 if (grille.placerPion(colonne, currentPlayers.getSymbole())) {
                     if (!grille.gameWin()) {
                         currentPlayers = currentPlayers.equals(joueur1) ? joueur2 : joueur1;
