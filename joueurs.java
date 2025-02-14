@@ -15,7 +15,7 @@ public class joueurs extends JoueursGlobals{
         System.out.println("Joueur "+nbr+", quel est votre nom ?");
         String name = scanner.nextLine();
         this.name = name;
-        System.out.println("Joueur "+nbrDeJoueurs+", votre nom est : " + this.name);
+        System.out.println("Joueur "+nbrDeJoueurs+", votre nom est : \u001B[32m" + this.name+"\u001B[0m");
         return name;
     }
     public String setSymbole(){
@@ -26,7 +26,7 @@ public class joueurs extends JoueursGlobals{
             System.out.println("\u001B[36mVotre symbole ne doit comporter qu'un seul caractere !\u001B[0m");
             return setSymbole();
         }
-        System.out.println(this.name+", votre symbole est : " + this.symboleDeJeu);
+        System.out.println(this.name+", votre symbole est : \u001B[32m" + this.symboleDeJeu+"\u001B[0m");
         return symbole;
     }
     

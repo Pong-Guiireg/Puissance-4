@@ -59,7 +59,7 @@ public class Grille {
 
     public void replay(joueurs currentPlayers) {
         if (temp) {
-            System.out.println("Le joueur " + currentPlayers.getName() + " a gagné !");
+            System.out.println("Le joueur \u001B[32m" + currentPlayers.getName() + "\u001B[0m a gagné !");
             temp = false;
         }
         System.out.print("Voulez-vous rejouer ? (O/N) ");
@@ -93,7 +93,7 @@ public class Grille {
     public void afficherGrille(joueurs currentPlayers) {
         if (!gameStarted) {
             ClearTerminal();
-            System.out.println("Le joueur " + currentPlayers.getName() + " a "+currentPlayers.getNombreDeVictoire()+" victoire(s) !");
+            System.out.println("Le joueur \u001B[32m" + currentPlayers.getName() + "\u001B[0m a \u001B[36m"+currentPlayers.getNombreDeVictoire()+"\u001B[0m victoire(s) !");
             System.out.print("Début de la partie :\n");
             gameStarted = true;
         }
@@ -112,7 +112,7 @@ public class Grille {
                 replay(currentPlayers);
             }
             if (gameStarted && pass) {
-                System.out.println("C'est à \u001B[31m" + currentPlayers.getName() + "\u001B[0m de jouer !");
+                System.out.println("C'est à \u001B[32m" + currentPlayers.getName() + "\u001B[0m de jouer !");
                 System.out.print("> ");
             }
         }
