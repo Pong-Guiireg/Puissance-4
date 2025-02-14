@@ -35,21 +35,23 @@ public class Grille {
 
     public boolean gameWin() {
         for (int i = 0; i < LIGNES; i++) {
-            for (int j = 0; j < COLONNES; j++) {
+            for (int j = 0; j < COLONNES; j += 2) { // Incrémenter de 2 pour ignorer les espaces
                 if (!plateau[i][j].equals(" ")) {
-                    if (j + 3 < COLONNES && plateau[i][j].equals(plateau[i][j + 1]) && plateau[i][j].equals(plateau[i][j + 2]) && plateau[i][j].equals(plateau[i][j + 3])) {
+                    // Vérification gauche droite
+                    if (j + 6 < COLONNES && plateau[i][j].equals(plateau[i][j + 2]) && plateau[i][j].equals(plateau[i][j + 4]) && plateau[i][j].equals(plateau[i][j + 6])) {
                         return true;
                     }
-                    if (i + 3 < LIGNES) {
-                        if (plateau[i][j].equals(plateau[i + 1][j]) && plateau[i][j].equals(plateau[i + 2][j]) && plateau[i][j].equals(plateau[i + 3][j])) {
-                            return true;
-                        }
-                        if (j + 3 < COLONNES && plateau[i][j].equals(plateau[i + 1][j + 1]) && plateau[i][j].equals(plateau[i + 2][j + 2]) && plateau[i][j].equals(plateau[i + 3][j + 3])) {
-                            return true;
-                        }
-                        if (j - 3 >= 0 && plateau[i][j].equals(plateau[i + 1][j - 1]) && plateau[i][j].equals(plateau[i + 2][j - 2]) && plateau[i][j].equals(plateau[i + 3][j - 3])) {
-                            return true;
-                        }
+                    // Vérification haut bas
+                    if (i + 3 < LIGNES && plateau[i][j].equals(plateau[i + 1][j]) && plateau[i][j].equals(plateau[i + 2][j]) && plateau[i][j].equals(plateau[i + 3][j])) {
+                        return true;
+                    }
+                    // Vérification diagonale qui monte
+                    if (i + 3 < LIGNES && j + 6 < COLONNES && plateau[i][j].equals(plateau[i + 1][j + 2]) && plateau[i][j].equals(plateau[i + 2][j + 4]) && plateau[i][j].equals(plateau[i + 3][j + 6])) {
+                        return true;
+                    }
+                    // Vérification diagonale qui descend
+                    if (i + 3 < LIGNES && j - 6 >= 0 && plateau[i][j].equals(plateau[i + 1][j - 2]) && plateau[i][j].equals(plateau[i + 2][j - 4]) && plateau[i][j].equals(plateau[i + 3][j - 6])) {
+                        return true;
                     }
                 }
             }
