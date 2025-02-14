@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Grille {
     private static final int LIGNES = 6;
-    private static final int COLONNES = 8;
+    private static final int COLONNES = 8*2;
     private String[][] plateau;
     private Scanner scanner = new Scanner(System.in);
 
@@ -103,16 +103,16 @@ public class Grille {
                 for (int j = 0; j < COLONNES; j++) {
                     System.out.print(plateau[i][j]);
                 }
-                System.out.println("#");
+                System.out.println("# ");
             }
-            System.out.println("##########");
-            System.out.println(" abcdefgh");
+            System.out.println("# # # # # # # # ##");
+            System.out.println(" a b c d e f g h");
 
             if (gameWin()) {
                 replay(currentPlayers);
             }
             if (gameStarted && pass) {
-                System.out.println("C'est à " + currentPlayers.getName() + " de jouer !");
+                System.out.println("C'est à \u001B[31m" + currentPlayers.getName() + "\u001B[0m de jouer !");
                 System.out.print("> ");
             }
         }
