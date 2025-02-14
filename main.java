@@ -11,7 +11,12 @@ public class main {
         //for (int i = 0; i < nbrDeJoueurs; i++) {
         //
         //}
-        joueur1.setName(1);
+        do{
+            joueur1.setName(1);
+            if (joueur1.getName().equals("")) {
+                System.out.println("\u001B[36mVous devez choisir un Nom !\u001B[0m");
+            }
+        } while (joueur1.getName().equals(""));
         do {
             joueur2.setName(2);
             if (joueur1.getName().equals(joueur2.getName())) {
@@ -19,7 +24,12 @@ public class main {
             }
         } while (joueur1.getName().equals(joueur2.getName()));
 
-        joueur1.setSymbole();
+        do{
+            joueur1.setSymbole();
+            if (joueur1.getSymbole().equals("")) {
+                System.out.println("\u001B[36mVous devez choisir un Symbole !\u001B[0m");
+            }
+        } while (joueur1.getSymbole().equals(""));
         do {
             joueur2.setSymbole();
             if (joueur2.getSymbole().equals(joueur1.getSymbole())) {
@@ -27,7 +37,7 @@ public class main {
             }
         } while (joueur2.getSymbole().equals(joueur1.getSymbole()));
 
-        joueursGlobals allJoueurs = new joueursGlobals();
+        JoueursGlobals allJoueurs = new JoueursGlobals();
         allJoueurs.addJoueursInAllJoueurs(joueur1);
         allJoueurs.addJoueursInAllJoueurs(joueur2);
         //--------------------------------------------------------------------------

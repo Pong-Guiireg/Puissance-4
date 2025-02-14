@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class joueursGlobals {
+public class JoueursGlobals {
     public int nbrDeJoueurs = 1;
     public List<joueurs> allJoueurs = new ArrayList<>();
 

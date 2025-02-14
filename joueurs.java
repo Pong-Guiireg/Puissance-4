@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class joueurs extends joueursGlobals{
+public class joueurs extends JoueursGlobals{
     public int nombreDeVictoire;
     public String symboleDeJeu;
     public String name;

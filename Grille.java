@@ -57,16 +57,46 @@ public class Grille {
         return false;
     }
 
+    public void replay(joueurs currentPlayers) {
+        if (temp) {
+            System.out.println("Le joueur " + currentPlayers.getName() + " a gagné !");
+            temp = false;
+        }
+        System.out.print("Voulez-vous rejouer ? (O/N) ");
+        pass = false;
+        String input = scanner.nextLine().toLowerCase();
+        switch (input) {
+            case "o":
+                ClearTerminal();
+                for (int i = 0; i < LIGNES; i++) {
+                    for (int j = 0; j < COLONNES; j++) {
+                        plateau[i][j] = " ";
+                    }
+                }
+                pass = true;
+                temp = true;
+                gameStarted = false;
+                currentPlayers.nombreDeVictoire++;
+            break;
+            case "n":
+                System.exit(0);
+            default:
+                System.out.println("\u001B[36mVeillez entrez quelque chose de correcte !\u001B[0m");
+                replay(currentPlayers);
+            break;
+        }
+    }
+
     boolean gameStarted = false;
     boolean temp = true;
+    boolean pass = true;
     public void afficherGrille(joueurs currentPlayers) {
         if (!gameStarted) {
-            System.out.print("Début de la partie :");
-            String input = scanner.nextLine().toLowerCase();
-            gameStarted = true;
             ClearTerminal();
+            System.out.println("Le joueur " + currentPlayers.getName() + " a "+currentPlayers.getNombreDeVictoire()+" victoire(s) !");
+            System.out.print("Début de la partie :\n");
+            gameStarted = true;
         }
-
         if (gameStarted) {
             for (int i = 0; i < LIGNES; i++) {
                 System.out.print("#");
@@ -79,26 +109,9 @@ public class Grille {
             System.out.println(" abcdefgh");
 
             if (gameWin()) {
-                if (temp) {
-                    System.out.println("Le joueur " + currentPlayers.getName() + " a gagné !");
-                    System.out.print("Voulez-vous rejouer ? (O/N) ");
-                    temp = false;
-                }
-                String input = scanner.nextLine().toLowerCase();
-                if (input.equals("o")) {
-                    ClearTerminal();
-                    for (int i = 0; i < LIGNES; i++) {
-                        for (int j = 0; j < COLONNES; j++) {
-                            plateau[i][j] = " ";
-                        }
-                    }
-                    temp = true;
-                    gameStarted = false;
-                    currentPlayers.nombreDeVictoire++;
-                } else if (input.equals("n")) {
-                    System.exit(0);
-                }
-            } else {
+                replay(currentPlayers);
+            }
+            if (gameStarted && pass) {
                 System.out.println("C'est à " + currentPlayers.getName() + " de jouer !");
                 System.out.print("> ");
             }
