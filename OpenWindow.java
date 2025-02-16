@@ -12,6 +12,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
 import javafx.geometry.Insets;
+import javafx.scene.control.ComboBox;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OpenWindow extends Application {
     private Stage primaryStage;
@@ -38,6 +41,7 @@ public class OpenWindow extends Application {
         createSettingsScene();
 
         primaryStage.setScene(menuScene);
+        primaryStage.setResizable(false); // Disable resizing
         primaryStage.show();
     }
 
@@ -111,6 +115,7 @@ public class OpenWindow extends Application {
 
         gameLayout.getChildren().addAll(leftSide, rightSide);
         gameScene = new Scene(gameLayout, 800, 600);
+        gameScene.setOnKeyPressed(event -> primaryStage.setResizable(false)); // Disable resizing
     }
 
     private void createPlayerSetupScene() {
@@ -120,21 +125,44 @@ public class OpenWindow extends Application {
 
         TextField player1Name = new TextField();
         TextField player2Name = new TextField();
-        player1Name.setPromptText("Player 1 Name");
-        player2Name.setPromptText("Player 2 Name");
+        player1Name.setPromptText("Nom du Joueur 1");
+        player2Name.setPromptText("Nom du Joueur 2");
 
-        Button player1ColorButton = new Button("Rouge");
-        Button player2ColorButton = new Button("Jaune");
-        player1ColorButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-        player2ColorButton.setStyle("-fx-background-color: yellow; -fx-text-fill: black;");
+        // Création des ComboBox pour la sélection des couleurs
+        ComboBox<String> player1ColorChoice = new ComboBox<>();
+        ComboBox<String> player2ColorChoice = new ComboBox<>();
 
-        Button startGameButton = new Button("Start Game");
+        // Ajout des couleurs disponibles
+        player1ColorChoice.getItems().addAll(
+            "Rouge", "Jaune", "Bleu", "Vert", "Orange", "Violet", "Rose"
+        );
+        player2ColorChoice.getItems().addAll(
+            "Rouge", "Jaune", "Bleu", "Vert", "Orange", "Violet", "Rose"
+        );
+
+        // Sélection des couleurs par défaut
+        player1ColorChoice.setValue("Rouge");
+        player2ColorChoice.setValue("Jaune");
+
+        // Map pour convertir les noms de couleurs en codes CSS
+        Map<String, String> colorMap = new HashMap<>();
+        colorMap.put("Rouge", "red");
+        colorMap.put("Jaune", "yellow");
+        colorMap.put("Bleu", "lightblue");
+        colorMap.put("Vert", "lightgreen");
+        colorMap.put("Orange", "orange");
+        colorMap.put("Violet", "purple");
+        colorMap.put("Rose", "pink");
+
+        Button startGameButton = new Button("Commencer la partie");
         Label errorLabel = new Label();
         errorLabel.setTextFill(Color.RED);
 
         startGameButton.setOnAction(e -> {
             String name1 = player1Name.getText().trim();
             String name2 = player2Name.getText().trim();
+            String color1 = player1ColorChoice.getValue();
+            String color2 = player2ColorChoice.getValue();
 
             if (name1.isEmpty() || name2.isEmpty()) {
                 errorLabel.setText("Tous les champs doivent être remplis !");
@@ -146,25 +174,33 @@ public class OpenWindow extends Application {
                 return;
             }
 
-            player1 = new Player(name1, "RED");
-            player2 = new Player(name2, "YELLOW");
+            if (color1.equals(color2)) {
+                errorLabel.setText("Les joueurs doivent avoir des couleurs différentes !");
+                return;
+            }
+
+            player1 = new Player(name1, colorMap.get(color1));
+            player2 = new Player(name2, colorMap.get(color2));
             currentPlayer = player1;
             updateTurnLabel();
             primaryStage.setScene(gameScene);
         });
 
         setupLayout.getChildren().addAll(
-            new Label("Enter Player 1 Details:"),
+            new Label("Détails du Joueur 1:"),
             player1Name,
-            player1ColorButton,
-            new Label("Enter Player 2 Details:"),
+            new Label("Choisir une couleur:"),
+            player1ColorChoice,
+            new Label("Détails du Joueur 2:"),
             player2Name,
-            player2ColorButton,
+            new Label("Choisir une couleur:"),
+            player2ColorChoice,
             errorLabel,
             startGameButton
         );
 
         playerSetupScene = new Scene(setupLayout, 800, 600);
+        playerSetupScene.setOnKeyPressed(event -> primaryStage.setResizable(false)); // Disable resizing
     }
 
     private void createSettingsScene() {
@@ -176,6 +212,7 @@ public class OpenWindow extends Application {
 
         settingsLayout.getChildren().add(backToMenuButton);
         settingsScene = new Scene(settingsLayout, 800, 600);
+        settingsScene.setOnKeyPressed(event -> primaryStage.setResizable(false)); // Disable resizing
     }
 
     public static void main(String[] args) {
