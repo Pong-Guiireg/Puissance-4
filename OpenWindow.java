@@ -45,16 +45,16 @@ public class OpenWindow extends Application {
         VBox menuLayout = new VBox(20);
         menuLayout.setAlignment(Pos.CENTER);
 
-        Button playButton = new Button("Play");
-        Button settingsButton = new Button("Settings");
-        Button exitButton = new Button("Exit");
+        Button playButton = new Button("Jouer");
+        Button settingsButton = new Button("Paramètres");
+        Button exitButton = new Button("Quitter");
 
         playButton.setOnAction(e -> primaryStage.setScene(playerSetupScene));
         settingsButton.setOnAction(e -> primaryStage.setScene(settingsScene));
         exitButton.setOnAction(e -> primaryStage.close());
 
         menuLayout.getChildren().addAll(playButton, settingsButton, exitButton);
-        menuScene = new Scene(menuLayout, 1280, 720);
+        menuScene = new Scene(menuLayout, 800, 600);
     }
 
     private void createGameScene() {
@@ -101,7 +101,7 @@ public class OpenWindow extends Application {
 
         Label player1Info = new Label();
         Label player2Info = new Label();
-        Button backToMenuButton = new Button("Back to Main Menu");
+        Button backToMenuButton = new Button("Retour au menu principal");
         backToMenuButton.setOnAction(e -> {
             resetGame();
             primaryStage.setScene(menuScene);
@@ -137,12 +137,12 @@ public class OpenWindow extends Application {
             String name2 = player2Name.getText().trim();
 
             if (name1.isEmpty() || name2.isEmpty()) {
-                errorLabel.setText("All fields must be filled!");
+                errorLabel.setText("Tous les champs doivent être remplis !");
                 return;
             }
 
             if (name1.equals(name2)) {
-                errorLabel.setText("Players must have different names!");
+                errorLabel.setText("Les joueurs doivent avoir des noms différents !");
                 return;
             }
 
@@ -175,7 +175,7 @@ public class OpenWindow extends Application {
         backToMenuButton.setOnAction(e -> primaryStage.setScene(menuScene));
 
         settingsLayout.getChildren().add(backToMenuButton);
-        settingsScene = new Scene(settingsLayout, 1280, 720);
+        settingsScene = new Scene(settingsLayout, 800, 600);
     }
 
     public static void main(String[] args) {
@@ -207,13 +207,13 @@ public class OpenWindow extends Application {
 
     private void showGameOverDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Game Over");
+        alert.setTitle("Fin de la partie");
         alert.setHeaderText(message);
-        alert.setContentText("What would you like to do?");
+        alert.setContentText("Que souhaitez-vous faire ?");
 
-        ButtonType newGame = new ButtonType("New Game");
-        ButtonType mainMenu = new ButtonType("Main Menu");
-        ButtonType exit = new ButtonType("Exit");
+        ButtonType newGame = new ButtonType("Nouvelle partie");
+        ButtonType mainMenu = new ButtonType("Menu principal");
+        ButtonType exit = new ButtonType("Quitter");
 
         alert.getButtonTypes().setAll(newGame, mainMenu, exit);
 
@@ -263,7 +263,7 @@ public class OpenWindow extends Application {
     }
 
     private void updateTurnLabel() {
-        turnLabel.setText("Current turn: " + currentPlayer.getName());
+        turnLabel.setText("Tour actuel : " + currentPlayer.getName());
     }
 
     class Player {
