@@ -1,21 +1,11 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
-import javafx.geometry.Pos;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.GridPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.geometry.*;
+import java.util.*;
 import javafx.scene.paint.Color;
-import javafx.geometry.Insets;
-import javafx.scene.control.ComboBox;
-import java.util.HashMap;
-import java.util.Map;
-
 public class OpenWindow extends Application {
     private Stage primaryStage;
     private Scene menuScene;
