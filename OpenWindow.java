@@ -31,7 +31,7 @@ public class OpenWindow extends Application {
         createSettingsScene();
 
         primaryStage.setScene(menuScene);
-        primaryStage.setResizable(false); // Disable resizing
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
@@ -105,7 +105,7 @@ public class OpenWindow extends Application {
 
         gameLayout.getChildren().addAll(leftSide, rightSide);
         gameScene = new Scene(gameLayout, 800, 600);
-        gameScene.setOnKeyPressed(event -> primaryStage.setResizable(false)); // Disable resizing
+        gameScene.setOnKeyPressed(event -> primaryStage.setResizable(false));
     }
 
     private void createPlayerSetupScene() {
@@ -113,28 +113,42 @@ public class OpenWindow extends Application {
         setupLayout.setAlignment(Pos.CENTER);
         setupLayout.setPadding(new Insets(20));
 
+        Label modeLabel = new Label("Mode de jeu :");
+        ComboBox<String> gameModeChoice = new ComboBox<>();
+        gameModeChoice.getItems().addAll("Joueur contre Joueur", "Joueur contre IA");
+        gameModeChoice.setValue("Joueur contre Joueur");
+
         TextField player1Name = new TextField();
-        TextField player2Name = new TextField();
         player1Name.setPromptText("Nom du Joueur 1");
-        player2Name.setPromptText("Nom du Joueur 2");
-
-        // Création des ComboBox pour la sélection des couleurs
         ComboBox<String> player1ColorChoice = new ComboBox<>();
-        ComboBox<String> player2ColorChoice = new ComboBox<>();
-
-        // Ajout des couleurs disponibles
-        player1ColorChoice.getItems().addAll(
-            "Rouge", "Jaune", "Bleu", "Vert", "Orange", "Violet", "Rose"
-        );
-        player2ColorChoice.getItems().addAll(
-            "Rouge", "Jaune", "Bleu", "Vert", "Orange", "Violet", "Rose"
-        );
-
-        // Sélection des couleurs par défaut
+        player1ColorChoice.getItems().addAll("Rouge", "Jaune", "Bleu", "Vert", "Orange", "Violet", "Rose");
         player1ColorChoice.setValue("Rouge");
+
+        VBox player2Config = new VBox(10);
+        TextField player2Name = new TextField();
+        player2Name.setPromptText("Nom du Joueur 2");
+        ComboBox<String> player2ColorChoice = new ComboBox<>();
+        player2ColorChoice.getItems().addAll("Rouge", "Jaune", "Bleu", "Vert", "Orange", "Violet", "Rose");
         player2ColorChoice.setValue("Jaune");
 
-        // Map pour convertir les noms de couleurs en codes CSS
+        VBox aiConfig = new VBox(10);
+        Label difficultyLabel = new Label("Niveau de difficulté de l'IA :");
+        Slider difficultySlider = new Slider(1, 10, 5);
+        difficultySlider.setShowTickLabels(true);
+        difficultySlider.setShowTickMarks(true);
+        difficultySlider.setMajorTickUnit(1);
+        difficultySlider.setBlockIncrement(1);
+        difficultySlider.setSnapToTicks(true);
+
+        aiConfig.getChildren().addAll(difficultyLabel, difficultySlider);
+        aiConfig.setVisible(false);
+
+        gameModeChoice.setOnAction(e -> {
+            boolean isAIMode = gameModeChoice.getValue().equals("Joueur contre IA");
+            player2Config.setVisible(!isAIMode);
+            aiConfig.setVisible(isAIMode);
+        });
+
         Map<String, String> colorMap = new HashMap<>();
         colorMap.put("Rouge", "red");
         colorMap.put("Jaune", "yellow");
@@ -150,47 +164,56 @@ public class OpenWindow extends Application {
 
         startGameButton.setOnAction(e -> {
             String name1 = player1Name.getText().trim();
-            String name2 = player2Name.getText().trim();
             String color1 = player1ColorChoice.getValue();
-            String color2 = player2ColorChoice.getValue();
+            boolean isAIMode = gameModeChoice.getValue().equals("Joueur contre IA");
 
-            if (name1.isEmpty() || name2.isEmpty()) {
-                errorLabel.setText("Tous les champs doivent être remplis !");
-                return;
-            }
-
-            if (name1.equals(name2)) {
-                errorLabel.setText("Les joueurs doivent avoir des noms différents !");
-                return;
-            }
-
-            if (color1.equals(color2)) {
-                errorLabel.setText("Les joueurs doivent avoir des couleurs différentes !");
+            if (name1.isEmpty()) {
+                errorLabel.setText("Le nom du Joueur 1 doit être rempli !");
                 return;
             }
 
             player1 = new Player(name1, colorMap.get(color1));
-            player2 = new Player(name2, colorMap.get(color2));
+
+            if (isAIMode) {
+                int difficulty = (int) difficultySlider.getValue();
+                player2 = new AI("IA", colorMap.get(player2ColorChoice.getValue()), difficulty);
+            } else {
+                String name2 = player2Name.getText().trim();
+                if (name2.isEmpty()) {
+                    errorLabel.setText("Le nom du Joueur 2 doit être rempli !");
+                    return;
+                }
+                if (name1.equals(name2)) {
+                    errorLabel.setText("Les joueurs doivent avoir des noms différents !");
+                    return;
+                }
+                player2 = new Player(name2, colorMap.get(player2ColorChoice.getValue()));
+            }
+
+            if (player1.getColor().equals(player2.getColor())) {
+                errorLabel.setText("Les joueurs doivent avoir des couleurs différentes !");
+                return;
+            }
+
             currentPlayer = player1;
             updateTurnLabel();
             primaryStage.setScene(gameScene);
         });
 
         setupLayout.getChildren().addAll(
+            modeLabel, gameModeChoice,
             new Label("Détails du Joueur 1:"),
             player1Name,
             new Label("Choisir une couleur:"),
             player1ColorChoice,
-            new Label("Détails du Joueur 2:"),
-            player2Name,
-            new Label("Choisir une couleur:"),
-            player2ColorChoice,
+            player2Config,
+            aiConfig,
             errorLabel,
             startGameButton
         );
 
         playerSetupScene = new Scene(setupLayout, 800, 600);
-        playerSetupScene.setOnKeyPressed(event -> primaryStage.setResizable(false)); // Disable resizing
+        playerSetupScene.setOnKeyPressed(event -> primaryStage.setResizable(false));
     }
 
     private void createSettingsScene() {
@@ -202,7 +225,7 @@ public class OpenWindow extends Application {
 
         settingsLayout.getChildren().add(backToMenuButton);
         settingsScene = new Scene(settingsLayout, 800, 600);
-        settingsScene.setOnKeyPressed(event -> primaryStage.setResizable(false)); // Disable resizing
+        settingsScene.setOnKeyPressed(event -> primaryStage.setResizable(false));
     }
 
     public static void main(String[] args) {
@@ -230,6 +253,12 @@ public class OpenWindow extends Application {
 
         currentPlayer = (currentPlayer == player1) ? player2 : player1;
         updateTurnLabel();
+
+        if (currentPlayer instanceof AI) {
+            AI ai = (AI) currentPlayer;
+            int aiMove = ai.chooseMove(gameBoard);
+            handleMove(aiMove);
+        }
     }
 
     private void showGameOverDialog(String message) {
@@ -356,5 +385,257 @@ public class OpenWindow extends Application {
             }
         }
         return false;
+    }
+
+    enum GameMode {
+        PLAYER_VS_PLAYER,
+        PLAYER_VS_AI
+    }
+
+    class AI extends Player {
+        private int difficulty;
+
+        public AI(String name, String color, int difficulty) {
+            super(name, color);
+            this.difficulty = Math.min(Math.max(difficulty, 1), 10);
+        }
+
+        public int getDifficulty() {
+            return difficulty;
+        }
+
+        public int chooseMove(char[][] gameBoard) {
+            if (difficulty <= 3) {
+                return makeRandomMove(gameBoard);
+            } else if (difficulty <= 6) {
+                return makeMediumMove(gameBoard);
+            } else {
+                return makeHardMove(gameBoard);
+            }
+        }
+
+        private int makeRandomMove(char[][] gameBoard) {
+            List<Integer> validMoves = getValidMoves(gameBoard);
+            return validMoves.get(new Random().nextInt(validMoves.size()));
+        }
+
+        private int makeMediumMove(char[][] gameBoard) {
+            for (int col : getValidMoves(gameBoard)) {
+                int row = getLowestEmptyRow(gameBoard, col);
+                if (row != -1) {
+                    gameBoard[row][col] = getColor().charAt(0);
+                    boolean wins = checkWinForAI(gameBoard, row, col);
+                    gameBoard[row][col] = ' ';
+                    if (wins) return col;
+                }
+            }
+
+            char adversaryColor = (getColor().equals("red")) ? 'y' : 'r';
+            for (int col : getValidMoves(gameBoard)) {
+                int row = getLowestEmptyRow(gameBoard, col);
+                if (row != -1) {
+                    gameBoard[row][col] = adversaryColor;
+                    boolean blocks = checkWinForAI(gameBoard, row, col);
+                    gameBoard[row][col] = ' ';
+                    if (blocks) return col;
+                }
+            }
+
+            return makeRandomMove(gameBoard);
+        }
+
+        private int makeHardMove(char[][] gameBoard) {
+            for (int col : getValidMoves(gameBoard)) {
+                int row = getLowestEmptyRow(gameBoard, col);
+                if (row != -1) {
+                    gameBoard[row][col] = getColor().charAt(0);
+                    boolean wins = checkWinForAI(gameBoard, row, col);
+                    gameBoard[row][col] = ' ';
+                    if (wins) return col;
+                }
+            }
+
+            char adversaryColor = (getColor().equals("red")) ? 'y' : 'r';
+            for (int col : getValidMoves(gameBoard)) {
+                int row = getLowestEmptyRow(gameBoard, col);
+                if (row != -1) {
+                    gameBoard[row][col] = adversaryColor;
+                    boolean blocks = checkWinForAI(gameBoard, row, col);
+                    gameBoard[row][col] = ' ';
+                    if (blocks) return col;
+                }
+            }
+
+            for (int col : getValidMoves(gameBoard)) {
+                int row = getLowestEmptyRow(gameBoard, col);
+                if (row != -1) {
+                    gameBoard[row][col] = getColor().charAt(0);
+                    if (hasDoubleThreat(gameBoard, getColor().charAt(0))) {
+                        gameBoard[row][col] = ' ';
+                        return col;
+                    }
+                    gameBoard[row][col] = ' ';
+                }
+            }
+
+            List<Integer> validMoves = getValidMoves(gameBoard);
+            int bestCol = validMoves.get(0);
+            int bestScore = -1;
+
+            for (int col : validMoves) {
+                int score = evaluateMove(gameBoard, col);
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestCol = col;
+                }
+            }
+
+            return bestCol;
+        }
+
+        private boolean hasDoubleThreat(char[][] board, char color) {
+            int threats = 0;
+            char[][] tempBoard = new char[ROWS][COLS];
+
+            for (int i = 0; i < ROWS; i++) {
+                for (int j = 0; j < COLS; j++) {
+                    tempBoard[i][j] = board[i][j];
+                }
+            }
+
+            for (int col = 0; col < COLS; col++) {
+                int row = getLowestEmptyRow(tempBoard, col);
+                if (row != -1) {
+                    tempBoard[row][col] = color;
+                    if (checkWinForAI(tempBoard, row, col)) {
+                        threats++;
+                    }
+                    tempBoard[row][col] = ' ';
+                    if (threats >= 2) return true;
+                }
+            }
+            return false;
+        }
+
+        private int evaluateMove(char[][] board, int col) {
+            int score = 0;
+            int row = getLowestEmptyRow(board, col);
+            if (row == -1) return -1000;
+
+            score += 7 - Math.abs(col - COLS/2);
+
+            board[row][col] = getColor().charAt(0);
+
+            char adversaryColor = (getColor().equals("red")) ? 'y' : 'r';
+            if (row > 0) {
+                board[row-1][col] = adversaryColor;
+                if (checkWinForAI(board, row-1, col)) {
+                    score -= 50;
+                }
+                board[row-1][col] = ' ';
+            }
+
+            score += countPartialAlignments(board, row, col, getColor().charAt(0));
+
+            board[row][col] = ' ';
+
+            return score;
+        }
+
+        private int countPartialAlignments(char[][] board, int row, int col, char color) {
+            int count = 0;
+            int[][] directions = {{0,1}, {1,0}, {1,1}, {1,-1}};
+
+            for (int[] dir : directions) {
+                int inLine = 1;
+                for (int i = 1; i < 4; i++) {
+                    int newRow = row + dir[0] * i;
+                    int newCol = col + dir[1] * i;
+                    if (isValidPosition(newRow, newCol) && board[newRow][newCol] == color) {
+                        inLine++;
+                    } else {
+                        break;
+                    }
+                }
+                for (int i = 1; i < 4; i++) {
+                    int newRow = row - dir[0] * i;
+                    int newCol = col - dir[1] * i;
+                    if (isValidPosition(newRow, newCol) && board[newRow][newCol] == color) {
+                        inLine++;
+                    } else {
+                        break;
+                    }
+                }
+                if (inLine >= 2) count += inLine * 2;
+            }
+            return count;
+        }
+
+        private boolean isValidPosition(int row, int col) {
+            return row >= 0 && row < ROWS && col >= 0 && col < COLS;
+        }
+
+        private List<Integer> getValidMoves(char[][] gameBoard) {
+            List<Integer> validMoves = new ArrayList<>();
+            for (int col = 0; col < COLS; col++) {
+                if (gameBoard[0][col] == ' ') {
+                    validMoves.add(col);
+                }
+            }
+            return validMoves;
+        }
+
+        private int getLowestEmptyRow(char[][] gameBoard, int col) {
+            for (int row = ROWS - 1; row >= 0; row--) {
+                if (gameBoard[row][col] == ' ') {
+                    return row;
+                }
+            }
+            return -1;
+        }
+
+        private boolean checkWinForAI(char[][] board, int row, int col) {
+            for (int c = Math.max(0, col - 3); c <= Math.min(col, COLS - 4); c++) {
+                if (board[row][c] != ' ' &&
+                    board[row][c] == board[row][c + 1] &&
+                    board[row][c] == board[row][c + 2] &&
+                    board[row][c] == board[row][c + 3]) {
+                    return true;
+                }
+            }
+
+            for (int r = Math.max(0, row - 3); r <= Math.min(row, ROWS - 4); r++) {
+                if (board[r][col] != ' ' &&
+                    board[r][col] == board[r + 1][col] &&
+                    board[r][col] == board[r + 2][col] &&
+                    board[r][col] == board[r + 3][col]) {
+                    return true;
+                }
+            }
+
+            for (int r = 3; r < ROWS; r++) {
+                for (int c = 0; c < COLS - 3; c++) {
+                    if (board[r][c] != ' ' &&
+                        board[r][c] == board[r - 1][c + 1] &&
+                        board[r][c] == board[r - 2][c + 2] &&
+                        board[r][c] == board[r - 3][c + 3]) {
+                        return true;
+                    }
+                }
+            }
+
+            for (int r = 0; r < ROWS - 3; r++) {
+                for (int c = 0; c < COLS - 3; c++) {
+                    if (board[r][c] != ' ' &&
+                        board[r][c] == board[r + 1][c + 1] &&
+                        board[r][c] == board[r + 2][c + 2] &&
+                        board[r][c] == board[r + 3][c + 3]) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }
