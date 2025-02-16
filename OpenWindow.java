@@ -131,6 +131,13 @@ public class OpenWindow extends Application {
         player2ColorChoice.getItems().addAll("Rouge", "Jaune", "Bleu", "Vert", "Orange", "Violet", "Rose");
         player2ColorChoice.setValue("Jaune");
 
+        player2Config.getChildren().addAll(
+            new Label("Détails du Joueur 2:"),
+            player2Name,
+            new Label("Choisir une couleur:"),
+            player2ColorChoice
+        );
+
         VBox aiConfig = new VBox(10);
         Label difficultyLabel = new Label("Niveau de difficulté de l'IA :");
         Slider difficultySlider = new Slider(1, 10, 5);
